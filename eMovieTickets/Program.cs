@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using eMovieTickets.Data.Services;
 
 //var host = Host.CreateDefaultBuilder(args)
 //    .ConfigureWebHostDefaults(webBuilder =>
@@ -72,6 +73,11 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
+
+// Add service configuration
+builder.Services.AddScoped<IActorsService, ActorsService>();
+builder.Services.AddScoped<IProducersService, ProducersService>();
+builder.Services.AddScoped<ICinemasService, CinemasService>();
 
 // Add services to the container
 builder.Services.AddDbContext<AppDbContext>(options =>
