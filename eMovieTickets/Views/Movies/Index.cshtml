@@ -15,10 +15,9 @@
                             <p class="card-text">
                                 <h5 class="card-title">
                                     @item.Name
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
+                                    
                                         <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                                    }
+                                   
                                 </h5>
                             </p>
                         </div>
@@ -59,7 +58,7 @@
                                 </a>
                                 <a class="btn btn-success text-white @((DateTime.Now > item.EndDate) ? "disabled" : "")"
                                asp-controller="Orders"
-                               asp-action="AddItemToShoppingCart"
+                               asp-action="AddItemToShoppingcart"
                                asp-route-id="@item.Id">
                                     <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))
                                 </a>
@@ -72,4 +71,4 @@
     }
 </div>
 
-@*@await Html.PartialAsync("_CreateItem", "Movies") *@
+@await Html.PartialAsync("_CreateItem", "Movies") 
