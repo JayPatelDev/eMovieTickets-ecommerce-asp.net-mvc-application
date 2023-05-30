@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using eMovieTickets.Data.Services;
 using eMovieTickets.Data.Cart;
+using Microsoft.AspNetCore.Identity;
+using eMovieTickets.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 //var host = Host.CreateDefaultBuilder(args)
 //    .ConfigureWebHostDefaults(webBuilder =>
@@ -84,7 +87,17 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
+//Authentication and Authorization
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+});
+
+
 
 // Add services to the container
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -96,6 +109,7 @@ var app = builder.Build();
 
 //seed database
 AppDbInitializer.seed(app);
+AppDbInitializer.SeedUserAndRolesAsync(app).Wait();
 
 // Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
@@ -112,6 +126,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+
+//Authentication and Authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAuthorization();
 

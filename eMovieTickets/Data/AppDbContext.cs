@@ -1,9 +1,10 @@
 ﻿using eMovieTickets.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace eMovieTickets.Data
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext: IdentityDbContext<ApplicationUser>
     {
         //private readonly string _connectionString;
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
